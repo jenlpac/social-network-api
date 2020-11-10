@@ -1,5 +1,4 @@
 const express = require('express');
-const { truncate } = require('fs');
 const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3001;

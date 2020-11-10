@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 // Create the User Schema:
 const UserSchema = new Schema({
@@ -12,7 +12,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        match: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,3})$/
+        match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,3})$/]
     },
     thoughts: [
         {
@@ -27,7 +27,7 @@ const UserSchema = new Schema({
         }
     ]
     
-}
+},
 {
     toJSON: {
         virtuals: true,
