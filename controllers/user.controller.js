@@ -68,7 +68,19 @@ const userController = {
             .catch(err => res.status(400).json(err));
     },
 
-    // Delete a user by id (along with thoughts):
-
+    // Delete a user by id:
+    deleteUser({ params }, res) {
+        User.findOneAndDelete({ _id: params.id })
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: "No user found by that id!" });
+                    return;
+                }
+                res.json(dbUserData)
+            })
+            .catch(err => res.status(400).json(err));
+    }
 
 }
+
+module.exports - userController;
