@@ -90,7 +90,7 @@ const userController = {
         .catch(err => res.status(400).json(err));
     },
 
-    // Remove friend:
+    // Delete friend:
     deleteFriend({ params }, res) {
         User.findByIdAndUpdate(
             { _id: params.userId },
