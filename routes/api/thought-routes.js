@@ -23,7 +23,7 @@ router
 
 // /api/thoughts/:thoughtId:
 router
-    .route('/:thoughtId')
+    .route('/:id')
     .get(getThought)
     .put(updateThought)
     .delete(deleteThought);
@@ -31,7 +31,7 @@ router
 // /api/thoughts/:thoughtId/reactions:
 router
     .route('/:thoughtId/reactions')
-    .put(createReaction);
+    .post(createReaction);
 
 // /api/thoughts/:thoughtId/reactions/:reactionId:
 router
