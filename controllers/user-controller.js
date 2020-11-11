@@ -14,8 +14,8 @@ const userController = {
     },
 
     // Get one user by id:
-    getUser(req, res) {
-        User.findOne({ _id: params.id })
+    getUser({ params }, res) {
+        User.findOne({ _id: params.userId })
             .populate({
                 path: 'thoughts',
                 select: '-__v'
@@ -48,7 +48,7 @@ const userController = {
 
     // Update a user by id:
     updateUser({ params, body }, res) {
-        User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+        User.findOneAndUpdate({ _id: params.userId }, body, { new: true, runValidators: true })
             .then(dbUserData => {
                 // If no user is found:
                 if (!dbUserData) {
@@ -62,14 +62,15 @@ const userController = {
 
     // Delete a user by id:
     deleteUser({ params }, res) {
-        User.findOneAndDelete({ _id: params.id })
+        User.findOneAndDelete({ _id: params.userId })
             .then(dbUserData => {
                 if (!dbUserData) {
                     res.status(404).json({ message: "No user found by that id!" });
                     return;
                 }
-                res.json(dbUserData)
+                res.json({ dbUserData, message: 'This user has been deleted!' })
             })
+
             .catch(err => res.status(400).json(err));
     },
 
@@ -80,7 +81,7 @@ const userController = {
             { $push: { friends: params.friendId } },
             { new: true, runValidators: true }
         )
-        .then(dbUserDate => {
+        .then(dbUserData => {
             if (!dbUserData) {
                 res.status(404).json({ message: "No user found by that id!" });
                 return;
@@ -94,10 +95,10 @@ const userController = {
     deleteFriend({ params }, res) {
         User.findByIdAndUpdate(
             { _id: params.userId },
-            { $pull: { friends: {friendId: params.friendId } } },
+            { $pull: { friends: params.friendId } },
             { new: true }
         )
-        .then(dbUserDate => res.json(dbUserDate))
+        .then(dbUserData => res.json(dbUserData))
         .catch(err => res.status(400).json(err));
     }
 
