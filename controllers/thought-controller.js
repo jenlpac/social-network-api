@@ -15,7 +15,7 @@ const thoughtController = {
 
     // Get one thought by id:
     getThought({ params }, res) {
-        Thought.findOne({ _id: params.id })
+        Thought.findOne({ _id: params.thoughtId })
             .populate({
                 path: 'reactions',
                 select: '-__v'
@@ -57,7 +57,7 @@ const thoughtController = {
 
     // Update a thought by id:
     updateThought({ params, body }, res) {
-        Thought.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+        Thought.findOneAndUpdate({ _id: params.thoughtId }, body, { new: true, runValidators: true })
             .populate({
                 path: 'reactions',
                 select: '-__v'
@@ -76,7 +76,7 @@ const thoughtController = {
 
     // Delete a thought by id:
     deleteThought({ params }, res) {
-        Thought.findOneAndDelete({ _id: params.id })
+        Thought.findOneAndDelete({ _id: params.thoughtId })
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     return res.status(404).json({ message: "No thought found by that id!" });
@@ -87,13 +87,14 @@ const thoughtController = {
                     { new: true }
                 );
                 
+                
             })
-            .then(dbUserData => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: "No user found by that id!" });
+            .then(dbThoughtData => {
+                if (!dbThoughtData) {
+                    res.status(404).json({ message: "No thought found by that id!" });
                     return;
                 };
-                res.json({ dbUserData, message: 'This thought has been deleted!'});
+                res.json({ dbThoughtData, message: 'This thought has been deleted!'});
             })
             .catch(err => res.status(400).json(err))
         
